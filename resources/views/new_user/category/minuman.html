@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kategori - Horison Restaurant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            background: #fff;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+            background: white;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #f0f0f0;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #333;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 23px;
+            color: #333;
+        }
+
+        /* Responsive untuk layar sangat kecil */
+        @media (max-width: 360px) {
+            .company-info,
+            .values-grid,
+            .brands-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 26px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+        }
+
+        /* Responsive untuk layar besar/tablet */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            }
+        }
+
+        /* Menu Content */
+        .menu-content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .menu-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #FFD93D;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(255, 217, 61, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            align-items: center;
+            height: 180px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 217, 61, 0.4);
+        }
+
+        .menu-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+            line-height: 1.2;
+            overflow: hidden;
+        }
+
+        .menu-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .menu-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-title {
+            font-weight: 700;
+            font-size: 20px;
+            color: #2c3e50;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        .menu-description {
+            font-weight: 500;
+            font-size: 10px;
+            color: #666;
+            line-height: 1.3;
+            margin-top: 6px;
+        }
+
+        .menu-price {
+            font-weight: 600;
+            font-size: 15px;
+            color: #e74c3c;
+            margin-top: 7px;
+        }
+
+        .add-btn {
+            background: transparent;
+            border: 1.5px solid #2ecc71;
+            border-radius: 15px;
+            padding: 6px 14px;
+            font-weight: 600;
+            font-size: 11px;
+            color: #2ecc71;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            max-width: 300px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .add-btn:hover {
+            background: #2ecc71;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Quantity Selector for Menu Item */
+        .menu-item .quantity-selector-inline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            width: 100%;
+            max-width: 120px;
+            border: 1.5px solid #2ecc71;
+            border-radius: 15px;
+            overflow: hidden;
+            /* Menambahkan gap */
+            gap: 26px; /* Memberikan jarak antara elemen */
+        }
+
+        .menu-item .quantity-selector-inline .quantity-btn {
+            width: 30px; /* Mengubah lebar tombol */
+            height: 30px; /* Mengubah tinggi tombol */
+            border: none;
+            background: #2ecc71;
+            color: white;
+            font-size: 16px; /* Mengubah ukuran font */
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-shrink: 0; /* Mencegah tombol menyusut */
+        }
+
+        .menu-item .quantity-selector-inline .quantity-btn:hover {
+            background: #27ae60;
+        }
+
+        .menu-item .quantity-selector-inline .quantity-value {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            padding: 0 2px; /* Mengurangi padding horizontal */
+            min-width: 25px; /* Memastikan ada lebar minimum */
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D1AD71;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 390px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 25px;
+            box-shadow: 0 15px 50px rgba(209, 173, 113, 0.4);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-item.active {
+            background: #766241;
+        }
+
+        .nav-item:hover {
+            background: rgba(118, 98, 65, 0.7);
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .home-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+        }
+
+        .menu-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 0 0 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>');
+        }
+
+        .order-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>');
+        }
+
+        .star-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
+        }
+
+        /* Overlay dan Popup Detail Produk - MODIFIED */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .product-detail {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 430px;
+            padding: 25px;
+            position: relative;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .overlay.active .product-detail {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .product-header {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .product-thumbnail {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .product-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-basic-info {
+            flex: 1;
+        }
+
+        .product-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .product-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .product-details {
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .detail-value {
+            font-weight: 400;
+            color: #333;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 12px 15px;
+        }
+
+        .quantity-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .quantity-value {
+            margin: 0 15px;
+            font-size: 18px;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 15px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            position: absolute;
+            bottom: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: flex;
+            gap: 10px; /* Menambahkan gap antara elemen di cart summary */
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+            cursor: pointer; /* Menambahkan cursor pointer untuk menunjukkan bisa diklik */
+        }
+
+        .cart-summary.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        .cart-summary span {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="window.history.back()">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 18L9 12L15 6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1 class="header-title">Drinks</h1>
+        </div>
+
+        <!-- Menu Content -->
+        <div class="menu-content">
+            <!-- Contoh menu item -->
+            <div class="menu-item" data-id="32">
+                <div class="menu-image">
+                    <img src="/image/minuman/fruits-punch.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Fruits Punch</h3>
+                    <p class="menu-description">Refreshing mixture of Orange, Pineapple, Lime, Mango, Grenadine Syrup topped with Soda Water</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item" data-id="33">
+                <div class="menu-image">
+                    <img src="/image/minuman/summer-dream.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Summer Dream</h3>
+                    <p class="menu-description">Mixed of Pineapple, Banana, Strawberry, and a dash of Coconut Milk</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item" data-id="34">
+                <div class="menu-image">
+                    <img src="/image/minuman/pink-lady.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Pink Lady</h3>
+                    <p class="menu-description">Mixed of Strawberry, Watermelon, Lime, and Mint</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="35">
+                <div class="menu-image">
+                    <img src="/image/minuman/virgin-mojito.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Virgin Mojito</h3>
+                    <p class="menu-description">Refreshing concoctions of Mint, Lime, and Sugar Filled up with Soda Water</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="36">
+                <div class="menu-image">
+                    <img src="/image/minuman/your-own-mojito.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Your Own Mojito</h3>
+                    <p class="menu-description">Choices Of Strawberry – Mango – Dragon Fruit</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="37">
+                <div class="menu-image">
+                    <img src="/image/minuman/milkshakes.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Milkshakes</h3>
+                    <p class="menu-description">Choices of Strawberry, Vanilla, or Chocolate</p>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="38">
+                <div class="menu-image">
+                    <img src="/image/minuman/vanilla-smoothies.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Vanilla Smoothies</h3>
+                    <p class="menu-description">A thick mixture from special Dairy Product blended with Honey and Yoghurt</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="39">
+                <div class="menu-image">
+                    <img src="/image/minuman/your-own-smoothies.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Your Own Smoothies</h3>
+                    <p class="menu-description">Choices of Banana, Mango, or Strawberry</p>
+                    <p class="menu-price">IDR 38.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="40">
+                <div class="menu-image">
+                    <img src="/image/minuman/hot-chocolate.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Hot Chocolate</h3>
+                    <p class="menu-description">Cokelat Panas</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="41">
+                <div class="menu-image">
+                    <img src="/image/minuman/guava-squash.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Your Own Squah</h3>
+                    <p class="menu-description">Guava, Lemon, Strawberry, Mango, or Orange</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="42">
+                <div class="menu-image">
+                    <img src="/image/minuman/fresh-orange-juice.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Fresh Orange Juice</h3>
+                    <p class="menu-description">Carrot – Tomato – Honeydew Melon – Papaya – Pineapple – Watermelon – Dragon Fruit – Avocado – Orange – Strawberry</p>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="43">
+                <div class="menu-image">
+                    <img src="/image/minuman/mixed-2.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Mixed (Max. 2 Choices)</h3>
+                    <p class="menu-description">Perpaduan Buah (Maksimal 2 Pilihan)</p>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="44">
+                <div class="menu-image">
+                    <img src="/image/minuman/chilled-juice.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Chilled Juice</h3>
+                    <p class="menu-description">Jus Dingin</p>
+                    <p class="menu-price">IDR 24.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="45">
+                <div class="menu-image">
+                    <img src="/image/minuman/soft-drink.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Soft Drink</h3>
+                    <p class="menu-description">Coca Cola - Fanta - Sprite</p>
+                    <p class="menu-price">IDR 25.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="46">
+                <div class="menu-image">
+                    <img src="/image/minuman/mineral-water.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Mineral Water</h3>
+                    <p class="menu-price">IDR 25.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="47">
+                <div class="menu-image">
+                    <img src="/image/minuman/reflection.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Reflection</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="48">
+                <div class="menu-image">
+                    <img src="/image/minuman/wedang-jahe.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Wedang Jahe</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="49">
+                <div class="menu-image">
+                    <img src="/image/minuman/wedang-bajigur.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Wedang Bajigur</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="50">
+                <div class="menu-image">
+                    <img src="/image/minuman/wedang-bandrek.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Wedang Bandrek</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="51">
+                <div class="menu-image">
+                    <img src="/image/minuman/teh-tubruk.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Teh Tubruk</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="52">
+                <div class="menu-image">
+                    <img src="/image/minuman/teh.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Teh</h3>
+                    <p class="menu-price">IDR 25.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="53">
+                <div class="menu-image">
+                    <img src="/image/minuman/black-coffee.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Black Coffee</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="54">
+                <div class="menu-image">
+                    <img src="/image/minuman/espresso.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Espresso</h3>
+                    <p class="menu-price">IDR 30.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="55">
+                <div class="menu-image">
+                    <img src="/image/minuman/doppio.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Doppio</h3>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="56">
+                <div class="menu-image">
+                    <img src="/image/minuman/caramel-macchiato.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Caramel Macchiato</h3>
+                    <p class="menu-price">IDR 45.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="57">
+                <div class="menu-image">
+                    <img src="/image/minuman/vanilla-affogato.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Vanilla Affogato</h3>
+                    <p class="menu-price">IDR 40.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="58">
+                <div class="menu-image">
+                    <img src="/image/minuman/creamy-vanilla-coffee.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Creamy Vanilla Coffee</h3>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="59">
+                <div class="menu-image">
+                    <img src="/image/minuman/cappuccino.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Cappuccino</h3>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="60">
+                <div class="menu-image">
+                    <img src="/image/minuman/cafe-latte.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Cafe Latte</h3>
+                    <p class="menu-price">IDR 35.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="61">
+                <div class="menu-image">
+                    <img src="/image/minuman/avocado-coffee.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">Avocado Coffee</h3>
+                    <p class="menu-price">IDR 38.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item" data-id="62">
+                <div class="menu-image">
+                    <img src="/image/minuman/barista.png" alt="cheese-fries" />
+                </div>
+                <div class="menu-info">
+                    <h3 class="menu-title">(Our Barista Recommendation)</h3>
+                    <p class="menu-price">IDR 42.000</p>
+                    <button class="add-btn">Tambah ke Keranjang</button>
+                    <div class="quantity-selector-inline" style="display: none;">
+                        <button class="quantity-btn decrease-btn-inline">-</button>
+                        <span class="quantity-value-inline">1</span>
+                        <button class="quantity-btn increase-btn-inline">+</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="window.location.href='/user/home.html'">
+                <div class="nav-icon home-icon"></div>
+            </button>
+            <button class="nav-item" onclick="window.location.href='/user/menu.html'">
+                <div class="nav-icon menu-icon"></div>
+            </button>
+            <button class="nav-item" onclick="window.location.href='/user/status.html'">
+                <div class="nav-icon order-icon"></div>
+            </button>
+            <button class="nav-item" onclick="window.location.href='/user/about-us.html'">
+                <div class="nav-icon star-icon"></div>
+            </button>
+            <!-- Elemen keranjang baru -->
+            <div class="cart-summary" id="cartSummary">
+                <span id="cartItemCount">0</span>
+                <span id="cartTotalPrice">IDR 0</span>
+                <span>Checkout</span>
+            </div>
+        </div>
+
+        <!-- Overlay dan Popup Detail Produk - MODIFIED -->
+        <div class="overlay" id="productOverlay">
+            <div class="product-detail">
+                <button class="close-btn" id="closeProductDetail">&times;</button>
+                
+                <div class="product-header">
+                    <div class="product-thumbnail">
+                        <img id="detailImage" src="" alt="Product Image" />
+                    </div>
+                    <div class="product-basic-info">
+                        <h2 class="product-title" id="detailTitle"></h2>
+                        <p class="product-price" id="detailPrice"></p>
+                    </div>
+                </div>
+                
+                <p class="product-description" id="detailDescription"></p>
+                
+                <div class="product-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Kategori</span>
+                        <span class="detail-value" id="detailCategory">Makanan Utama</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Waktu Penyajian</span>
+                        <span class="detail-value" id="detailServeTime">15-20 menit</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tingkat Kepedasan</span>
+                        <span class="detail-value" id="detailSpiceLevel">Sedang</span>
+                    </div>
+                </div>
+                
+                <div class="quantity-selector">
+                    <span class="quantity-label">Jumlah:</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" id="decreaseQty">-</button>
+                        <span class="quantity-value" id="quantity">1</span>
+                        <button class="quantity-btn" id="increaseQty">+</button>
+                    </div>
+                </div>
+                
+                <button class="add-to-cart-btn" id="addToCartDetail">
+                    Tambah ke Keranjang - <span id="totalPrice"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data produk
+        const products = {
+    1: {
+        title: "Soto Santan",
+        price: 45000,
+        description: "Tasikmalaya chicken soup that are slowly simmered in a coconut milk broth",
+        image: "/image/soto-santan.png",
+        category: "Signature Dishes",
+        categorySynonyms: ["signature", "signature dishes", "signature rice", "nasi khas", "nasi", "hidangan utama"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    2: {
+        title: "Timbel Rice",
+        price: 45000,
+        description: "Steamed rice wrapped up with banana leaves served with chicken and fresh vegetables",
+        image: "/image/timbel-rice.png",
+        category: "Signature Dishes",
+        categorySynonyms: ["signature", "signature dishes", "signature rice", "nasi khas", "nasi", "hidangan utama"],
+        serveTime: "5-10 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    3: {
+        title: "Tenderloin Steak",
+        price: 125000,
+        description: "Grilled tenderloin served with vegetables, french fries, and barbeque sauce",
+        image: "/image/tenderloin-steak.png",
+        category: "Signature Dishes",
+        categorySynonyms: ["signature", "signature dishes", "steak", "hidangan utama"],
+        serveTime: "20-25 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    4: {
+        title: "Chicken Steak",
+        price: 45000,
+        description: "Grilled chicken served with vegetables, french fries, and barbeque sauce",
+        image: "/image/chicken-steak.png",
+        category: "Signature Dishes",
+        categorySynonyms: ["signature", "signature dishes", "steak", "hidangan utama"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    5: {
+        title: "Sate Maranggi",
+        price: 75000,
+        description: "One of traditional dish from West Java, Sweet & Savoury grill beef skewers served with Sambal Gowang, Peanut Spicy Sauce, & Steam Rice",
+        image: "/image/sate-maranggi.png",
+        category: "Signature Dishes",
+        categorySynonyms: ["signature", "signature dishes", "sate", "satay", "hidangan utama"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    6: {
+        title: "Cikur Rice",
+        price: 45000,
+        description: "Steamed Marinated Galangal Rice served with Chicken and Fresh Vegetables",
+        image: "/image/rice-cikur.png",
+        category: "Signature Dishes",
+        categorySynonyms: ["signature", "signature dishes", "nasi", "rice", "hidangan utama"],
+        serveTime: "5-10 menit",
+        spiceLevel: "Sedang"
+    },
+    7: {
+        title: "Cheese Fries",
+        price: 30000,
+        description: "Fries potatoes served with melted cheese sauce",
+        image: "/image/cheese-fries.png",
+        category: "Bite & Start",
+        categorySynonyms: ["cemilan", "appetizer", "bite", "start", "snack", "fries", "kentang goreng"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Tidak Pedas"
+    },
+    8: {
+        title: "Imperial Caesar Salad",
+        price: 45000,
+        description: "Romaine Lettuce, Grill Chicken, Grill Prawn served with Caesar Dressing.",
+        image: "/image/caesar-salad.png",
+        category: "Bite & Start",
+        categorySynonyms: ["cemilan", "appetizer", "bite", "start", "snack", "salad", "sayur"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    9: {
+        title: "BBQ Chicken Wings",
+        price: 30000,
+        description: "Braised Chicken Wings and Homemade BBQ Sauce.",
+        image: "/image/bbq-wings.png",
+        category: "Bite & Start",
+        categorySynonyms: ["cemilan", "appetizer", "bite", "start", "snack", "sayap ayam", "wings"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Sedang"
+    },
+    10: {
+        title: "Duck Aglio Olio Sambal Matah",
+        price: 55000,
+        description: "Italian pasta cooked with traditional braised duck & Sambal Matah",
+        image: "/image/duck-aglio-olio.png",
+        category: "Pasta & Noodles",
+        categorySynonyms: ["pasta", "mie", "noodles", "spaghetti", "tagliatelle", "fettuccine", "italian", "mie goreng", "mie rebus"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Pedas"
+    },
+    11: {
+        title: "Pad Thai",
+        price: 50000,
+        description: "Thai Kwetiau cooked with hot paste Thailand spices & Local Prawn",
+        image: "/image/pad-thai.png",
+        category: "Pasta & Noodles",
+        categorySynonyms: ["pasta", "mie", "noodles", "kwetiau", "thai", "mie goreng", "mie rebus"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    12: {
+        title: "Chicken Fried Noodle",
+        price: 45000,
+        description: "Eggs noodles with Kampung spices & Seared Chicken Fillet on top",
+        image: "/image/chicken-fried-noodle.png",
+        category: "Pasta & Noodles",
+        categorySynonyms: ["pasta", "mie", "noodles", "mie goreng", "mie rebus"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    13: {
+        title: "Soto Ayam Madura",
+        price: 45000,
+        description: "Traditional Chicken soup, Boiled Eggs, Chicken Shredded, Sambal, Kerupuk, & Steam Rice",
+        image: "/image/soto-ayam-madura.png",
+        category: "Soups & Broths",
+        categorySynonyms: ["sup", "soup", "kaldu", "soto", "ayam", "broth", "kuah"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    14: {
+        title: "Beef Ribs Soup",
+        price: 85000,
+        description: "Traditional ribs cooked with local spice, served with sambal, emping, & Steam Rice",
+        image: "/image/beef-ribs-soup.png",
+        category: "Soups & Broths",
+        categorySynonyms: ["sup", "soup", "kaldu", "iga", "broth", "kuah"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    15: {
+        title: "Tom Yum Soup",
+        price: 50000,
+        description: "Spicy and Sour Shrimp Soup cook with Lemongrass and Coriander Flavour",
+        image: "/image/tom-yum-soup.png",
+        category: "Soups & Broths",
+        categorySynonyms: ["sup", "soup", "kaldu", "tom yum", "broth", "kuah"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Sedang"
+    },
+    16: {
+        title: "Soto Betawi",
+        price: 50000,
+        description: "Jakarta traditional beef soup, Coconut Milk Broth, Pickles, Sambal, Emping, & Steam Rice",
+        image: "/image/soto-betawi.png",
+        category: "Soups & Broths",
+        categorySynonyms: ["sup", "soup", "kaldu", "soto", "betawi", "broth", "kuah"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    17: {
+        title: "Horison Oxtail Soup",
+        price: 85000,
+        description: "Traditional oxtail cooked with local spice, served with sambal, emping, & Steam Rice",
+        image: "/image/oxtail-soup.png",
+        category: "Soups & Broths",
+        categorySynonyms: ["sup", "soup", "kaldu", "buntut", "broth", "kuah"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    18: {
+        title: "Beef Ribs Fried Rice",
+        price: 60000,
+        description: "Green chili paste, Beef Ribs served with Pickles, Sunny Side Up Eggs, & Emping",
+        image: "/image/beef-ribs-fried-rice.png",
+        category: "Signature Rice",
+        categorySynonyms: ["nasi", "fried rice", "nasi goreng", "rice", "signature rice", "nasi khas"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    19: {
+        title: "Horison Fried Rice",
+        price: 45000,
+        description: "Indonesian Nasi Goreng served with Chicken Satay, Fried Chicken, Sunny Side Up Eggs, Pickles, & Prawn Crackers",
+        image: "/image/horison-fried-rice.png",
+        category: "Signature Rice",
+        categorySynonyms: ["nasi", "fried rice", "nasi goreng", "rice", "signature rice", "nasi khas"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    20: {
+        title: "Rawon Fried Rice",
+        price: 50000,
+        description: "Javanese Rawon Paste with Beef Dice, Salted Eggs, Pickles, & Prawn Crackers",
+        image: "/image/rawon-fried-rice.png",
+        category: "Signature Rice",
+        categorySynonyms: ["nasi", "fried rice", "nasi goreng", "rice", "signature rice", "nasi khas"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    21: {
+        title: "Basil Burger's",
+        price: 50000,
+        description: "Beef patties with onion rings, homemade BBQ Sauce, Coleslow served with Fries",
+        image: "/image/basil-burger.png",
+        category: "Burgers & Sandwiches",
+        categorySynonyms: ["burger", "sandwich", "roti lapis", "burger", "sandwiches", "roti"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    22: {
+        title: "Fish And Chips",
+        price: 40000,
+        description: "Deep Fried Fish served with Tartar Sauce and French Fries",
+        image: "/image/fish-and-chips.png",
+        category: "Burgers & Sandwiches",
+        categorySynonyms: ["burger", "sandwich", "roti lapis", "fish and chips", "fried fish", "sandwiches", "roti"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    23: {
+        title: "Club Sandwiches",
+        price: 50000,
+        description: "Triple Deck Sandwiches, Grill Chicken, Eggs & Beef Ham Served with Fries",
+        image: "/image/club-sandwiches.png",
+        category: "Burgers & Sandwiches",
+        categorySynonyms: ["burger", "sandwich", "roti lapis", "club sandwich", "sandwiches", "roti"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    24: {
+        title: "Aromatic Fried Duck",
+        price: 85000,
+        description: "Braised local duck with local traditional paste spice, Traditional Madura chicken satay, Peanuts spice sauce, Pickles & Steam Rice served with Karedok & Steam Rice",
+        image: "/image/aromatic-fried-duck.png",
+        category: "Grilled Specialties",
+        categorySynonyms: ["panggang", "grilled", "bakar", "bebek", "duck", "grilled specialties"],
+        serveTime: "20-25 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    25: {
+        title: "Grilled Chicken Satay",
+        price: 50000,
+        description: "Traditional Madura chicken satay, Peanuts spice sauce, Pickles & Steam Rice",
+        image: "/image/grilled-chicken-satay.png",
+        category: "Grilled Specialties",
+        categorySynonyms: ["panggang", "grilled", "bakar", "sate ayam", "satay", "grilled specialties"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    26: {
+        title: "Colenak",
+        price: 30000,
+        description: "Grilled Fermented Cassava served with Brown Sugar Sauce",
+        image: "/image/colenak.png",
+        category: "Sweet Endings",
+        categorySynonyms: ["pencuci mulut", "dessert", "manis", "sweet", "colenak", "desserts"],
+        serveTime: "5-10 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    27: {
+        title: "Fried Banana Fritters",
+        price: 30000,
+        description: "Indonesian fried bananas, Condensed Milk, Cheese Shredded, Chocolate Sauce",
+        image: "/image/banana-fritters.png",
+        category: "Sweet Endings",
+        categorySynonyms: ["pencuci mulut", "dessert", "manis", "sweet", "pisang goreng", "desserts"],
+        serveTime: "5-10 menit",
+        spiceLevel: "Tidak pedas"
+    },
+    28: {
+        title: "Soto Ramen Fusion",
+        price: 55000,
+        description: "Indonesian Soto meets Japanese Ramen with miso broth, shredded chicken & seasoned egg",
+        image: "/image/soto-ramen-fusion.png",
+        category: "New Menu",
+        categorySynonyms: ["baru", "new", "terbaru", "soto", "ramen", "fusion"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Bisa disesuaikan"
+    },
+    29: {
+        title: "Tom Yum Seafood Hotpot",
+        price: 80000,
+        description: "Thai tom yum broth with prawns, mussels, fish & vegetables in individual clay pot",
+        image: "/image/tom-yum-hotpot.png",
+        category: "New Menu",
+        categorySynonyms: ["baru", "new", "terbaru", "tom yum", "hotpot", "seafood"],
+        serveTime: "20-25 menit",
+        spiceLevel: "Sedang"
+    },
+    30: {
+        title: "Horison Sampler Platter",
+        price: 85000,
+        description: "Mini Rendang Spring Rolls, Tempeh Chips with Sambal Matah & Chicken Satay Sliders served with signature sauces",
+        image: "/image/horison-sampler.png",
+        category: "New Menu",
+        categorySynonyms: ["baru", "new", "terbaru", "sampler", "platter"],
+        serveTime: "10-15 menit",
+        spiceLevel: "Tidak Pedas"
+    },
+    31: {
+        title: "Nasi Liwet Risotto",
+        price: 65000,
+        description: "Creamy coconut rice with grilled chicken, sayur asem & kerupuk served in claypot",
+        image: "/image/nasi-liwet-risotto.png",
+        category: "New Menu",
+        categorySynonyms: ["baru", "new", "terbaru", "nasi liwet", "risotto"],
+        serveTime: "15-20 menit",
+        spiceLevel: "Tidak pedas"
+    },
+
+    32: {
+    title: "Fruits Punch",
+    price: 35000,
+    description: "Refreshing mixture of Orange, Pineapple, Lime, Mango, Grenadine Syrup topped with Soda Water",
+    image: "/image/minuman/fruits-punch.png",
+    category: "Mocktail",
+    categorySynonyms: ["mocktail", "minuman segar", "juice", "jus", "cocktail non alkohol"],
+    serveTime: "5-10 menit",
+},
+33: {
+    title: "Summer Dream",
+    price: 35000,
+    description: "Mixed of Pineapple, Banana, Strawberry, and a dash of Coconut Milk",
+    image: "/image/minuman/summer-dream.png",
+    category: "Mocktail",
+    categorySynonyms: ["mocktail", "minuman segar", "juice", "jus", "cocktail non alkohol"],
+    serveTime: "5-10 menit",
+},
+34: {
+    title: "Pink Lady",
+    price: 35000,
+    description: "Mixed of Strawberry, Watermelon, Lime, and Mint",
+    image: "/image/minuman/pink-lady.png",
+    category: "Mocktail",
+    categorySynonyms: ["mocktail", "minuman segar", "juice", "jus", "cocktail non alkohol"],
+    serveTime: "5-10 menit",
+},
+35: {
+    title: "Virgin Mojito",
+    price: 35000,
+    description: "Refreshing concoctions of Mint, Lime, and Sugar Filled up with Soda Water",
+    image: "/image/minuman/virgin-mojito.png",
+    category: "Mocktail",
+    categorySynonyms: ["mocktail", "minuman segar", "juice", "jus", "cocktail non alkohol"],
+    serveTime: "5-10 menit",
+},
+36: {
+    title: "Your Own Mojito",
+    price: 35000,
+    description: "Choices Of Strawberry – Mango – Dragon Fruit",
+    image: "/image/minuman/your-own-mojito.png",
+    category: "Mocktail",
+    categorySynonyms: ["mocktail", "minuman segar", "juice", "jus", "cocktail non alkohol"],
+    serveTime: "5-10 menit",
+},
+37: {
+    title: "Milkshakes",
+    price: 30000,
+    description: "Choices of Strawberry, Vanilla, or Chocolate",
+    image: "/image/minuman/milkshakes.png",
+    category: "Milk House",
+    categorySynonyms: ["milkshakes", "milk house", "susu", "minuman susu", "shake"],
+    serveTime: "5-10 menit",
+},
+38: {
+    title: "Vanilla Smoothies",
+    price: 35000,
+    description: "A thick mixture from special Dairy Product blended with Honey and Yoghurt",
+    image: "/image/minuman/vanilla-smoothies.png",
+    category: "Milk House",
+    categorySynonyms: ["smoothies", "milk house", "susu", "minuman susu", "shake"],
+    serveTime: "5-10 menit",
+},
+39: {
+    title: "Your Own Smoothies",
+    price: 38000,
+    description: "Choices of Banana, Mango, or Strawberry",
+    image: "/image/minuman/your-own-smoothies.png",
+    category: "Milk House",
+    categorySynonyms: ["smoothies", "milk house", "susu", "minuman susu", "shake"],
+    serveTime: "5-10 menit",
+},
+40: {
+    title: "Hot Chocolate",
+    price: 35000,
+    description: "Cokelat Panas",
+    image: "/image/minuman/hot-chocolate.png",
+    category: "Milk House",
+    categorySynonyms: ["hot chocolate", "milk house", "cokelat panas", "susu", "minuman susu"],
+    serveTime: "5-10 menit",
+},
+41: {
+    title: "Your Own Squah",
+    price: 35000,
+    description: "Guava, Lemon, Strawberry, Mango, or Orange",
+    image: "/image/minuman/guava-squash.png",
+    category: "Squash",
+    categorySynonyms: ["squash", "minuman segar", "buah", "jus", "juice"],
+    serveTime: "5-10 menit",
+},
+42: {
+    title: "Fresh Orange Juice",
+    price: 30000,
+    description: "Carrot – Tomato – Honeydew Melon – Papaya – Pineapple – Watermelon – Dragon Fruit – Avocado – Orange – Strawberry",
+    image: "/image/minuman/fresh-orange-juice.png",
+    category: "Juices",
+    categorySynonyms: ["juice", "jus", "fresh juice", "jus segar", "buah"],
+    serveTime: "5-10 menit",
+},
+43: {
+    title: "Mixed (Max. 2 Choices)",
+    price: 35000,
+    description: "Perpaduan Buah (Maksimal 2 Pilihan)",
+    image: "/image/minuman/mixed-2.png",
+    category: "Juices",
+    categorySynonyms: ["juice", "jus", "fresh juice", "jus segar", "buah"],
+    serveTime: "5-10 menit",
+},
+44: {
+    title: "Chilled Juice",
+    price: 24000,
+    description: "Jus Dingin",
+    image: "/image/minuman/chilled-juice.png",
+    category: "Juices",
+    categorySynonyms: ["juice", "jus", "fresh juice", "jus segar", "buah"],
+    serveTime: "5-10 menit",
+},
+45: {
+    title: "Soft Drink",
+    price: 25000,
+    description: "Coca Cola - Fanta - Sprite",
+    image: "/image/minuman/soft-drink.png",
+    category: "Soft Drink",
+    categorySynonyms: ["soft drink", "minuman ringan", "cola", "fanta", "sprite"],
+    serveTime: "5-10 menit",
+},
+46: {
+    title: "Mineral Water",
+    price: 25000,
+    image: "/image/minuman/mineral-water.png",
+    category: "Soft Drink",
+    categorySynonyms: ["mineral water", "air mineral", "air putih"],
+    serveTime: "5-10 menit",
+},
+47: {
+    title: "Reflection",
+    price: 30000,
+    image: "/image/minuman/reflection.png",
+    category: "Soft Drink",
+    categorySynonyms: ["soft drink", "minuman ringan"],
+    serveTime: "5-10 menit",
+},
+48: {
+    title: "Wedang Jahe",
+    price: 30000,
+    image: "/image/minuman/wedang-jahe.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["wedang jahe", "minuman tradisional", "jahe", "teh", "kopi"],
+    serveTime: "5-10 menit",
+},
+49: {
+    title: "Wedang Bajigur",
+    price: 30000,
+    image: "/image/minuman/wedang-bajigur.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["wedang bajigur", "minuman tradisional", "jahe", "kopi"],
+    serveTime: "5-10 menit",
+},
+50: {
+    title: "Wedang Bandrek",
+    price: 30000,
+    image: "/image/minuman/wedang-bandrek.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["wedang bandrek", "minuman tradisional", "jahe", "kopi"],
+    serveTime: "5-10 menit",
+},
+51: {
+    title: "Teh Tubruk",
+    price: 30000,
+    image: "/image/minuman/teh-tubruk.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["teh tubruk", "teh", "minuman tradisional"],
+    serveTime: "5-10 menit",
+},
+52: {
+    title: "Teh",
+    price: 25000,
+    image: "/image/minuman/teh.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["teh", "minuman tradisional"],
+    serveTime: "5-10 menit",
+},
+53: {
+    title: "Black Coffee",
+    price: 30000,
+    image: "/image/minuman/black-coffee.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["kopi hitam", "black coffee", "kopi"],
+    serveTime: "5-10 menit",
+},
+54: {
+    title: "Espresso",
+    price: 30000,
+    image: "/image/minuman/espresso.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["espresso", "kopi"],
+    serveTime: "5-10 menit",
+},
+55: {
+    title: "Doppio",
+    price: 35000,
+    image: "/image/minuman/doppio.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["doppio", "kopi"],
+    serveTime: "5-10 menit",
+},
+56: {
+    title: "Caramel Macchiato",
+    price: 45000,
+    image: "/image/minuman/caramel-macchiato.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["caramel macchiato", "kopi"],
+    serveTime: "5-10 menit",
+},
+57: {
+    title: "Vanilla Affogato",
+    price: 40000,
+    image: "/image/minuman/vanilla-affogato.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["vanilla affogato", "kopi"],
+    serveTime: "5-10 menit",
+},
+58: {
+    title: "Creamy Vanilla Coffee",
+    price: 35000,
+    image: "/image/minuman/creamy-vanilla-coffee.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["creamy vanilla coffee", "kopi"],
+    serveTime: "5-10 menit",
+},
+59: {
+    title: "Cappuccino",
+    price: 35000,
+    image: "/image/minuman/cappuccino.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["cappuccino", "kopi"],
+    serveTime: "5-10 menit",
+},
+60: {
+    title: "Cafe Latte",
+    price: 35000,
+    image: "/image/minuman/cafe-latte.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["cafe latte", "kopi"],
+    serveTime: "5-10 menit",
+},
+61: {
+    title: "Avocado Coffee",
+    price: 38000,
+    image: "/image/minuman/avocado-coffee.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["avocado coffee", "kopi"],
+    serveTime: "5-10 menit",
+},
+62: {
+    title: "(Our Barista Recommendation)",
+    price: 42000,
+    image: "/image/minuman/barista.png",
+    category: "Coffee, Traditional & Tea",
+    categorySynonyms: ["barista recommendation", "kopi"],
+    serveTime: "5-10 menit",
+},
+};
+        // Elemen DOM
+        const overlay = document.getElementById('productOverlay');
+        const closeBtn = document.getElementById('closeProductDetail');
+        const detailImage = document.getElementById('detailImage');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailPrice = document.getElementById('detailPrice');
+        const detailDescription = document.getElementById('detailDescription');
+        const detailCategory = document.getElementById('detailCategory');
+        const detailServeTime = document.getElementById('detailServeTime');
+        const detailSpiceLevel = document.getElementById('detailSpiceLevel');
+        const quantityElement = document.getElementById('quantity');
+        const decreaseBtn = document.getElementById('decreaseQty');
+        const increaseBtn = document.getElementById('increaseQty');
+        const totalPriceElement = document.getElementById('totalPrice');
+        const addToCartDetailBtn = document.getElementById('addToCartDetail');
+        
+        // Elemen keranjang baru
+        const cartSummary = document.getElementById('cartSummary');
+        const cartItemCount = document.getElementById('cartItemCount');
+        const cartTotalPrice = document.getElementById('cartTotalPrice');
+
+        let currentProductId = null;
+        let currentPrice = 0;
+        let quantity = 1;
+
+        // Variabel untuk menyimpan item di keranjang
+        // Inisialisasi cart dari localStorage atau array kosong jika belum ada
+        let cart = JSON.parse(localStorage.getItem('cart')) || []; 
+
+        // Fungsi untuk menyimpan keranjang ke localStorage
+        function saveCartToLocalStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Fungsi untuk menampilkan detail produk
+        function showProductDetail(productId) {
+            const product = products[productId];
+            if (!product) return;
+            
+            currentProductId = productId;
+            currentPrice = product.price;
+            
+            // Dapatkan kuantitas produk dari keranjang, jika ada. Jika tidak, default ke 1.
+            const existingItem = cart.find(item => item.productId == productId);
+            quantity = existingItem ? existingItem.quantity : 1; 
+            
+            // Isi data produk
+            detailImage.src = product.image;
+            detailImage.alt = product.title;
+            detailTitle.textContent = product.title;
+            detailPrice.textContent = `IDR ${product.price.toLocaleString('id-ID')}`;
+            detailDescription.textContent = product.description;
+            detailCategory.textContent = product.category;
+            detailServeTime.textContent = product.serveTime;
+            detailSpiceLevel.textContent = product.spiceLevel;
+            
+            // Update quantity dan total harga di popup
+            quantityElement.textContent = quantity;
+            updateTotalPriceInPopup();
+
+            // Atur teks tombol "Tambah ke Keranjang" di pop-up berdasarkan kuantitas
+            if (quantity > 0) {
+                addToCartDetailBtn.textContent = `Update Keranjang - IDR ${ (currentPrice * quantity).toLocaleString('id-ID')}`;
+            } else {
+                addToCartDetailBtn.textContent = `Tambah ke Keranjang - IDR ${ (currentPrice * 1).toLocaleString('id-ID')}`;
+            }
+            addToCartDetailBtn.style.background = '#2ecc71'; // Pastikan warna kembali hijau
+
+            // Tampilkan overlay
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Mencegah scrolling body saat overlay aktif
+        }
+
+        // Fungsi untuk menyembunyikan detail produk
+        function hideProductDetail() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = ''; // Mengembalikan scrolling body
+        }
+
+        // Fungsi untuk update total harga di popup
+        function updateTotalPriceInPopup() {
+            const total = currentPrice * quantity;
+            totalPriceElement.textContent = `IDR ${total.toLocaleString('id-ID')}`;
+            // Update teks tombol "Tambah ke Keranjang" di pop-up secara real-time
+            if (quantity > 0) {
+                addToCartDetailBtn.textContent = `Update Keranjang - IDR ${total.toLocaleString('id-ID')}`;
+            } else {
+                addToCartDetailBtn.textContent = `Hapus dari Keranjang`;
+            }
+        }
+
+        // Fungsi untuk memperbarui tampilan ringkasan keranjang
+        function updateCartSummary() {
+            let totalItems = 0;
+            let totalCartPrice = 0;
+
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                totalCartPrice += item.quantity * item.price;
+            });
+
+            cartItemCount.textContent = totalItems;
+            cartTotalPrice.textContent = `IDR ${totalCartPrice.toLocaleString('id-ID')}`;
+
+            if (totalItems > 0) {
+                cartSummary.classList.add('active');
+            } else {
+                cartSummary.classList.remove('active');
+            }
+        }
+
+        // Fungsi untuk menambahkan/mengupdate/menghapus produk dari keranjang
+        function updateCartItem(productId, newQuantity) {
+            const product = products[productId];
+            if (!product) return;
+
+            const existingItemIndex = cart.findIndex(item => item.productId == productId);
+
+            if (newQuantity > 0) {
+                if (existingItemIndex > -1) {
+                    // Update kuantitas jika produk sudah ada
+                    cart[existingItemIndex].quantity = newQuantity;
+                } else {
+                    // Tambahkan produk baru jika belum ada
+                    cart.push({
+                        productId: productId,
+                        quantity: newQuantity,
+                        price: product.price,
+                        title: product.title, // Tambahkan title untuk kemudahan di checkout
+                        image: product.image // Tambahkan image untuk kemudahan di checkout
+                    });
+                }
+            } else {
+                // Hapus produk jika kuantitas 0
+                if (existingItemIndex > -1) {
+                    cart.splice(existingItemIndex, 1);
+                }
+            }
+            saveCartToLocalStorage(); // Simpan perubahan ke localStorage
+            updateCartSummary();
+            updateMenuItemDisplay(productId); // Perbarui tampilan item di daftar menu
+        }
+
+        // Fungsi untuk memperbarui tampilan item di daftar menu (tombol vs. input kuantitas)
+        function updateMenuItemDisplay(productId) {
+            const menuItem = document.querySelector(`.menu-item[data-id="${productId}"]`);
+            if (!menuItem) return;
+
+            const addBtn = menuItem.querySelector('.add-btn');
+            const quantitySelectorInline = menuItem.querySelector('.quantity-selector-inline');
+            const quantityValueInline = menuItem.querySelector('.quantity-value-inline');
+
+            const existingItem = cart.find(item => item.productId == productId);
+
+            if (existingItem && existingItem.quantity > 0) {
+                addBtn.style.display = 'none';
+                quantitySelectorInline.style.display = 'flex';
+                quantityValueInline.textContent = existingItem.quantity;
+            } else {
+                addBtn.style.display = 'block';
+                quantitySelectorInline.style.display = 'none';
+                addBtn.textContent = 'Tambah ke Keranjang'; // Kembalikan teks tombol
+                addBtn.style.background = 'transparent'; // Kembalikan warna tombol
+                addBtn.style.color = '#2ecc71'; // Kembalikan warna teks
+            }
+        }
+
+        // Event listener untuk menu item (untuk membuka pop-up)
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Pastikan klik bukan pada tombol "Tambah ke Keranjang" atau kontrol kuantitas inline
+                if (!e.target.classList.contains('add-btn') && 
+                    !e.target.classList.contains('quantity-btn') &&
+                    !e.target.closest('.quantity-selector-inline')) {
+                    const productId = item.getAttribute('data-id');
+                    showProductDetail(productId);
+                }
+            });
+        });
+
+        // Event listener untuk tombol close pop-up
+        closeBtn.addEventListener('click', hideProductDetail);
+
+        // Event listener untuk overlay (klik di luar popup untuk menutup)
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                hideProductDetail();
+            }
+        });
+
+        // Event listener untuk tombol quantity di pop-up
+        decreaseBtn.addEventListener('click', () => {
+            if (quantity > 0) {
+                quantity--;
+                quantityElement.textContent = quantity;
+                updateTotalPriceInPopup();
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            quantity++;
+            quantityElement.textContent = quantity;
+            updateTotalPriceInPopup();
+        });
+
+        // Event listener untuk tombol tambah ke keranjang di pop-up
+        addToCartDetailBtn.addEventListener('click', () => {
+            updateCartItem(currentProductId, quantity);
+
+            // Feedback visual
+            if (quantity > 0) {
+                addToCartDetailBtn.textContent = 'Ditambahkan ke Keranjang!';
+                addToCartDetailBtn.style.background = '#27ae60';
+            } else {
+                addToCartDetailBtn.textContent = 'Dihapus dari Keranjang!';
+                addToCartDetailBtn.style.background = '#e74c3c';
+            }
+            
+            setTimeout(() => {
+                hideProductDetail();
+                // Setelah pop-up tertutup, reset teks tombol di pop-up untuk penggunaan berikutnya
+                addToCartDetailBtn.textContent = `Tambah ke Keranjang - IDR ${ (currentPrice * 1).toLocaleString('id-ID')}`;
+                addToCartDetailBtn.style.background = '#2ecc71';
+            }, 1000); // Mengurangi delay agar lebih responsif
+        });
+
+        // Event listener untuk tombol "Tambah ke Keranjang" di daftar menu
+        document.querySelectorAll('.add-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const productId = e.target.closest('.menu-item').getAttribute('data-id');
+                // Saat menambahkan dari tombol "Tambah ke Keranjang", selalu tambahkan 1
+                updateCartItem(productId, (cart.find(item => item.productId == productId)?.quantity || 0) + 1);
+
+                // Feedback visual
+                button.textContent = 'Ditambahkan!';
+                button.style.background = '#2ecc71';
+                button.style.color = '#fff';
+                
+                setTimeout(() => {
+                    updateMenuItemDisplay(productId);
+                }, 500);
+            });
+        });
+
+        // Event listener untuk tombol kuantitas inline di daftar menu
+        document.querySelectorAll('.menu-item').forEach(menuItem => {
+            const productId = menuItem.getAttribute('data-id');
+            const decreaseBtnInline = menuItem.querySelector('.decrease-btn-inline');
+            const increaseBtnInline = menuItem.querySelector('.increase-btn-inline');
+            const quantityValueInline = menuItem.querySelector('.quantity-value-inline');
+
+            if (decreaseBtnInline && increaseBtnInline && quantityValueInline) {
+                decreaseBtnInline.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let currentQty = parseInt(quantityValueInline.textContent);
+                    if (currentQty > 0) {
+                        currentQty--;
+                        updateCartItem(productId, currentQty);
+                    }
+                });
+
+                increaseBtnInline.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let currentQty = parseInt(quantityValueInline.textContent);
+                    currentQty++;
+                    updateCartItem(productId, currentQty);
+                });
+            }
+        });
+
+        // Event listener untuk tombol Checkout di cart summary
+        cartSummary.addEventListener('click', () => {
+            // Data keranjang sudah disimpan secara otomatis oleh updateCartItem
+            window.location.href = '/user/checkout.html'; // Arahkan ke halaman checkout
+        });
+
+        // Inisialisasi tampilan keranjang dan item menu saat halaman dimuat
+        function initializePage() {
+            // Variabel cart sudah diinisialisasi dari localStorage di awal script
+            updateCartSummary();
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const productId = item.getAttribute('data-id');
+                updateMenuItemDisplay(productId);
+            });
+        }
+
+        initializePage();
+    </script>
+</body>
+</html>

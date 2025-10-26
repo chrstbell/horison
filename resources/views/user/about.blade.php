@@ -1,0 +1,1082 @@
+@extends("layouts.home")
+
+@section("title", "HORISON Hotels | About Us")
+
+@push("styles")
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            background: #fff;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+            background: white;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #f0f0f0;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #333;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 23px;
+            color: #333;
+        }
+
+        /* Content Scroll */
+        .content {
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 280px;
+            background: linear-gradient(135deg, #D1AD71 0%, #B8935C 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url({{ asset("images/horison.png") }}) center/cover;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 30px 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #D1AD71;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #D1AD71;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* Vision Mission */
+        .vision-mission {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .vision,
+        .mission {
+            margin-bottom: 25px;
+        }
+
+        .vision h3,
+        .mission h3 {
+            color: #D1AD71;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .vision h3::before {
+            content: '👁️';
+            margin-right: 8px;
+        }
+
+        .mission h3::before {
+            content: '🎯';
+            margin-right: 8px;
+        }
+
+        .vision p,
+        .mission p {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Company Info */
+        .company-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(209, 173, 113, 0.2);
+        }
+
+        .info-card h4 {
+            color: #D1AD71;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Brand Values */
+        .values-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .value-item {
+            background: linear-gradient(135deg, #D1AD71, #B8935C);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .value-item.animate {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .value-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .value-item p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Hotel Brands */
+        .brands-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .brand-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .brand-card:hover {
+            border-color: #D1AD71;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(209, 173, 113, 0.2);
+        }
+
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23D1AD71" rx="10"/><text x="50" y="50" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="10">LOGO</text></svg>') center/cover;
+            margin: 0 auto 10px;
+            border-radius: 10px;
+        }
+
+        .brand-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .brand-category {
+            font-size: 12px;
+            color: #D1AD71;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            margin: 20px 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 150px;
+            /* Increased height for better visibility */
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Ensure images cover the area */
+            display: block;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item.large {
+            grid-column: span 2;
+            height: 200px;
+            /* Increased height for large item */
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-caption {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Service Culture 6K */
+        .culture-items {
+            margin: 20px 0;
+        }
+
+        .culture-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #D1AD71;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.5s ease;
+        }
+
+        .culture-item.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .culture-title {
+            font-weight: 600;
+            color: #D1AD71;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .culture-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .contact-item {
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        /* Map Section */
+        .map-section {
+            background: linear-gradient(145deg, #e0f7fa, #b2ebf2);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-section .section-title {
+            color: #00796b;
+        }
+
+        .map-address {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .map-button {
+            display: inline-block;
+            background: #00796b;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 121, 107, 0.3);
+        }
+
+        .map-button:hover {
+            background: #004d40;
+            transform: translateY(-2px);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D1AD71;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 390px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 25px;
+            box-shadow: 0 15px 50px rgba(209, 173, 113, 0.4);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-item.active {
+            background: #766241;
+        }
+
+        .nav-item:hover {
+            background: rgba(118, 98, 65, 0.7);
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .home-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+        }
+
+        .menu-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 0 0 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>');
+        }
+
+        .order-icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>');
+        }
+
+        .star-icon {
+            background-image: url('{{ asset("images/logo-h1.png") }}');
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 430px) {
+
+            .company-info,
+            .values-grid,
+            .brands-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+        }
+
+        /* Responsive untuk layar besar/tablet */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+@endpush
+
+@section("content")
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+        <h1 class="header-title">Tentang Horison</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-bg-image"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">Horison Hotels</h1>
+                <p class="hero-subtitle">
+                    Kearifan Lokal dengan Kekhasan Indonesia
+                </p>
+            </div>
+        </section>
+
+        <!-- Vision & Mission -->
+        <section class="section fade-in">
+            <h2 class="section-title">Visi & Misi</h2>
+            <div class="vision-mission">
+                <div class="vision">
+                    <h3>Visi</h3>
+                    <p>
+                        Menjadi perusahaan hospitality kelas dunia yang
+                        menggabungkan kearifan lokal dengan kekhasan
+                        Indonesia
+                    </p>
+                </div>
+                <div class="mission">
+                    <h3>Misi</h3>
+                    <p>
+                        Kami menggabungkan sumber daya manusia, merek
+                        dan teknologi yang menghasilkan pengalaman yang
+                        menyentuh hati bagi para tamu, lingkungan kerja
+                        positif bagi karyawan, nilai investasi yang baik
+                        bagi pemilik hotel, dan manfaat bagi masyarakat.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Info -->
+        <section class="section fade-in">
+            <h2 class="section-title">Informasi Perusahaan</h2>
+            <div class="company-info">
+                <div class="info-card">
+                    <h4>Didirikan</h4>
+                    <p>22 Mei 2003</p>
+                </div>
+                <div class="info-card">
+                    <h4>Holding Company</h4>
+                    <p>PT. Metropolitan Development</p>
+                </div>
+                <div class="info-card">
+                    <h4>Direktur Utama</h4>
+                    <p>Bapak Fenza Sofyan</p>
+                </div>
+                <div class="info-card">
+                    <h4>Manajemen</h4>
+                    <p>PT. Metropolitan Golden Management</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Values -->
+        <section class="section fade-in">
+            <h2 class="section-title">Nilai-Nilai Horison</h2>
+            <div class="values-grid">
+                <div class="value-item fade-in">
+                    <h4>Bersyukur</h4>
+                    <p>Kepada Tuhan YME</p>
+                </div>
+                <div class="value-item fade-in">
+                    <h4>Profesionalisme</h4>
+                    <p>Dalam setiap layanan</p>
+                </div>
+                <div class="value-item fade-in">
+                    <h4>Kejujuran</h4>
+                    <p>Transparansi & integritas</p>
+                </div>
+                <div class="value-item fade-in">
+                    <h4>Kedisiplinan</h4>
+                    <p>Konsisten & tepat waktu</p>
+                </div>
+                <div class="value-item fade-in">
+                    <h4>Keterbukaan</h4>
+                    <p>Open minded</p>
+                </div>
+                <div class="value-item fade-in">
+                    <h4>Kebersamaan</h4>
+                    <p>Kerjasama tim</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hotel Brands -->
+        <section class="section fade-in">
+            <h2 class="section-title">Brand Hotel Kami</h2>
+            <div class="brands-grid">
+                <div class="brand-card">
+                    <div class="brand-logo"></div>
+                    <div class="brand-name">Grand Horison</div>
+                    <div class="brand-category">Luxury</div>
+                </div>
+                <div class="brand-card">
+                    <div class="brand-logo"></div>
+                    <div class="brand-name">Horison Ultima</div>
+                    <div class="brand-category">Upscale</div>
+                </div>
+                <div class="brand-card">
+                    <div class="brand-logo"></div>
+                    <div class="brand-name">Horison</div>
+                    <div class="brand-category">Midscale</div>
+                </div>
+                <div class="brand-card">
+                    <div class="brand-logo"></div>
+                    <div class="brand-name">Aziza Syariah</div>
+                    <div class="brand-category">Midscale</div>
+                </div>
+                <div class="brand-card">
+                    <div class="brand-logo"></div>
+                    <div class="brand-name">@HOM</div>
+                    <div class="brand-category">Economy</div>
+                </div>
+                <div class="brand-card">
+                    <div class="brand-logo"></div>
+                    <div class="brand-name">Horison Express</div>
+                    <div class="brand-category">Budget</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section class="section fade-in">
+            <h2 class="section-title">Galeri Foto</h2>
+            <div class="photo-gallery">
+                <div class="gallery-grid">
+                    <div class="gallery-item large">
+                        <img src="{{ asset("images/lobby.png") }}" alt="Lobby Hotel Horison" />
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
+                                Lobby Hotel Horison
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="{{ asset("images/kamar.png") }}" alt="Kamar Superior" />
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
+                                Kamar Superior
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="{{ asset("images/restaurant.png") }}" alt="Restaurant" />
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
+                                Restaurant
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="{{ asset("images/meeting.png") }}" alt="Meeting Room" />
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
+                                Meeting Room
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="{{ asset("images/pool.png") }}" alt="Swimming Pool" />
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">
+                                Swimming Pool
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Culture 6K -->
+        <section class="section fade-in">
+            <h2 class="section-title">Budaya Pelayanan 6K</h2>
+            <div class="culture-items">
+                <div class="culture-item fade-in">
+                    <div class="culture-title">
+                        Keramahan (Hospitality)
+                    </div>
+                    <div class="culture-desc">
+                        Melayani secara sopan, dengan senyuman dan
+                        bersikap santun
+                    </div>
+                </div>
+                <div class="culture-item fade-in">
+                    <div class="culture-title">
+                        Kesungguhan (Seriousness)
+                    </div>
+                    <div class="culture-desc">
+                        Melayani dengan semangat dan konsentrasi penuh
+                    </div>
+                </div>
+                <div class="culture-item fade-in">
+                    <div class="culture-title">Kecepatan (Speed)</div>
+                    <div class="culture-desc">
+                        Melayani sesuai standar waktu yang telah
+                        ditetapkan
+                    </div>
+                </div>
+                <div class="culture-item fade-in">
+                    <div class="culture-title">Kehangatan (Warmth)</div>
+                    <div class="culture-desc">
+                        Melayani dengan gembira dan penuh perhatian
+                    </div>
+                </div>
+                <div class="culture-item fade-in">
+                    <div class="culture-title">Kepedulian (Care)</div>
+                    <div class="culture-desc">
+                        Melayani dengan rasa peduli kepada sesama dan
+                        lingkungan
+                    </div>
+                </div>
+                <div class="culture-item fade-in">
+                    <div class="culture-title">
+                        Ketulusan (Sincerity)
+                    </div>
+                    <div class="culture-desc">
+                        Melayani sepenuh hati dengan tulus
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact-info fade-in">
+            <h3 class="contact-title">Hubungi Kami</h3>
+            <div class="contact-item">📧 info@myhorison.com</div>
+            <div class="contact-item">📞 +62 81-9059-50000</div>
+            <div class="contact-item">🌐 https://myhorison.com/</div>
+            <div class="contact-item">📍 Jakarta, Indonesia</div>
+        </section>
+
+        <!-- Map Section for Horison Tasikmalaya -->
+        <section class="section map-section fade-in">
+            <h2 class="section-title">Lokasi Kami</h2>
+            <p class="map-address">
+                Horison Tasikmalaya<br />Jl. Yudanegara No.63,
+                Cihideung, Kec. Cihideung, Kota Tasikmalaya, Jawa Barat
+                46121
+            </p>
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.927927927927!2d108.2223113153173!3d-7.327799994830996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e8a3a3a3a3a3%3A0x123456789abcdef!2sHorison%20Tasikmalaya!5e0!3m2!1sid!2sid!4v1680000000000!5m2!1sid!2sid"
+                    width="100%" height="250" style="border: 0; border-radius: 15px" allowfullscreen=""
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Peta Horison Tasikmalaya"></iframe>
+            </div>
+        </section>
+    </div>
+@endsection
+
+@push("scripts")
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Staggered animation for value items
+        const valueItems = document.querySelectorAll('.value-item');
+        valueItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.transitionDelay = `${index * 0.1}s`;
+            }, 100);
+        });
+
+        // Staggered animation for culture items
+        const cultureItems = document.querySelectorAll('.culture-item');
+        cultureItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.transitionDelay = `${index * 0.1}s`;
+            }, 100);
+        });
+
+        // Smooth scroll for content
+        const content = document.querySelector('.content');
+        let isScrolling = false;
+
+        content.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    // Add parallax effect to hero section
+                    const heroSection = document.querySelector('.hero-section');
+                    const scrollTop = content.scrollTop;
+                    const rate = scrollTop * -0.5;
+
+                    if (heroSection) {
+                        heroSection.style.transform = `translateY(${rate}px)`;
+                    }
+
+                    // Add floating animation to navigation
+                    const bottomNav = document.querySelector('.bottom-nav');
+                    if (scrollTop > 100) {
+                        bottomNav.style.transform = 'translateX(-50%) translateY(-5px)';
+                        bottomNav.style.boxShadow = '0 20px 60px rgba(209, 173, 113, 0.6)';
+                    } else {
+                        bottomNav.style.transform = 'translateX(-50%) translateY(0px)';
+                        bottomNav.style.boxShadow = '0 15px 50px rgba(209, 173, 113, 0.4)';
+                    }
+
+                    isScrolling = false;
+                });
+            }
+            isScrolling = true;
+        });
+
+        // Add hover effects for interactive elements
+        document.querySelectorAll('.info-card, .brand-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.6s ease-in-out';
+            });
+
+            card.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+
+        // Add click animation for gallery items
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                }, 100);
+            });
+        });
+
+        // Initialize animations on page load
+        window.addEventListener('load', () => {
+            // Trigger initial animations
+            setTimeout(() => {
+                document.querySelectorAll('.section').forEach((section, index) => {
+                    setTimeout(() => {
+                        section.classList.add('animate');
+                    }, index * 200);
+                });
+            }, 500);
+        });
+
+        // Add dynamic loading effect for brand logos
+        document.querySelectorAll('.brand-logo').forEach((logo, index) => {
+            setTimeout(() => {
+                logo.style.background =
+                    `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23D1AD71" rx="10"/><circle cx="50" cy="50" r="20" fill="white"/><text x="50" y="55" text-anchor="middle" dominant-baseline="middle" fill="%23D1AD71" font-size="8">H${index + 1}</text></svg>') center/cover`;
+            }, index * 300);
+        });
+
+        // Removed the dynamic loading for gallery items as actual images are used now
+        /*
+        document.querySelectorAll('.gallery-item').forEach((item, index) => {
+            const photoTypes = ['lobby', 'room', 'restaurant', 'meeting', 'pool'];
+            const photoType = photoTypes[index % photoTypes.length];
+            
+            setTimeout(() => {
+                item.style.background = `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120"><defs><linearGradient id="grad${index}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23D1AD71;stop-opacity:0.8" /><stop offset="100%" style="stop-color:%23B8935C;stop-opacity:0.8" /></linearGradient></defs><rect width="200" height="120" fill="url(%23grad${index})"/><circle cx="100" cy="60" r="15" fill="white" opacity="0.8"/><text x="100" y="90" text-anchor="middle" fill="white" font-size="10" font-weight="bold">${photoType.toUpperCase()}</text></svg>') center/cover`;
+            }, index * 200);
+        });
+        */
+
+        // Navigation active state management
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+
+                // Add active class to clicked item
+                this.classList.add('active');
+
+                // Add click animation
+                this.style.transform = 'translateY(-3px) scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-3px) scale(1.1)';
+                }, 100);
+            });
+        });
+
+        // Add typewriter effect to hero title
+        const heroTitle = document.querySelector('.hero-title');
+        if (heroTitle) {
+            const originalText = heroTitle.textContent;
+            heroTitle.textContent = '';
+
+            setTimeout(() => {
+                let index = 0;
+                const typeWriter = () => {
+                    if (index < originalText.length) {
+                        heroTitle.textContent += originalText.charAt(index);
+                        index++;
+                        setTimeout(typeWriter, 100);
+                    }
+                };
+                typeWriter();
+            }, 1000);
+        }
+
+        // Add floating animation to section titles
+        document.querySelectorAll('.section-title').forEach((title, index) => {
+            setTimeout(() => {
+                title.style.animation = 'fadeInUp 0.8s ease forwards';
+            }, index * 300);
+        });
+
+        // Add progressive loading for content sections
+        const sections = document.querySelectorAll('.section');
+        const loadSection = (index) => {
+            if (index < sections.length) {
+                setTimeout(() => {
+                    sections[index].style.opacity = '1';
+                    sections[index].style.transform = 'translateY(0)';
+                    loadSection(index + 1);
+                }, 200);
+            }
+        };
+
+        // Start progressive loading after initial delay
+        setTimeout(() => {
+            loadSection(0);
+        }, 800);
+    </script>
+@endpush

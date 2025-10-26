@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Horison Login</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Inter", -apple-system, BlinkMacSystemFont,
+                    "Segoe UI", Roboto, sans-serif;
+                color: #333;
+                line-height: 1.4;
+                min-height: 100vh;
+                background: white;
+            }
+
+            .container {
+                max-width: 430px;
+                margin: 0 auto;
+                position: relative;
+                min-height: 100vh;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+                background: white;
+            }
+
+            .logo-container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                opacity: 0;
+                transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .logo-container.loaded {
+                opacity: 1;
+            }
+
+            .logo-container.pushed-up {
+                top: 35%;
+                transform: translate(-50%, -50%);
+            }
+
+            .logo-image {
+                width: 300px;
+                height: 300px;
+                object-fit: contain;
+                margin-bottom: 100px;
+                filter: brightness(0) saturate(100%) invert(69%) sepia(36%) saturate(377%) hue-rotate(15deg) brightness(90%) contrast(89%);
+            }
+
+            .brand-text {
+                font-size: 14px;
+                font-weight: 500;
+                color: #d1ad71;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+            }
+
+            .login-container {
+                position: absolute;
+                bottom: -100%;
+                left: 0;
+                right: 0;
+                background: #d1ad71;
+                border-radius: 20px 20px 0 0;
+                padding: 40px 32px 60px;
+                transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                min-height: 400px;
+            }
+
+            .login-container.visible {
+                bottom: 0;
+            }
+
+            .login-header {
+                text-align: center;
+                margin-bottom: 40px;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+            }
+
+            .login-container.visible .login-header {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .login-title {
+                font-size: 30px;
+                font-weight: 700;
+                color: white;
+                margin-bottom: 8px;
+                letter-spacing: -0.5px;
+            }
+
+            .login-subtitle {
+                font-size: 14px;
+                font-weight: 500;
+                color: white;
+                opacity: 0.9;
+            }
+
+            .progress-indicator {
+                width: 50px;
+                height: 4px;
+                background: white;
+                border-radius: 100px;
+                margin: 0 auto 16px;
+            }
+
+            .form-container {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
+            }
+
+            .login-container.visible .form-container {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+            }
+
+            .input-field {
+                width: 100%;
+                height: 51px;
+                background: white;
+                border: none;
+                border-radius: 10px;
+                padding: 0 16px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #333;
+                transition: all 0.3s ease;
+            }
+
+            .input-field::placeholder {
+                color: rgba(0, 0, 0, 0.54);
+                font-weight: 500;
+            }
+
+            .input-field:focus {
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+                transform: translateY(-2px);
+            }
+
+            .password-container {
+                position: relative;
+            }
+
+            .password-toggle {
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: opacity 0.3s ease;
+            }
+
+            .password-toggle:hover {
+                opacity: 1;
+            }
+
+            .login-button {
+                width: 131px;
+                height: 38px;
+                background: white;
+                border: none;
+                border-radius: 100px;
+                color: #d1ad71;
+                font-size: 14px;
+                font-weight: 700;
+                cursor: pointer;
+                margin: 40px auto 0;
+                display: block;
+                transition: all 0.3s ease;
+                transform: translateY(20px);
+                opacity: 0;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .login-button::before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                background: rgba(209, 173, 113, 0.2);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                transition: all 0.6s ease;
+            }
+
+            .login-button.clicked::before {
+                width: 300px;
+                height: 300px;
+            }
+
+            .login-button.loading {
+                pointer-events: none;
+            }
+
+            .login-button.loading::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 16px;
+                height: 16px;
+                border: 2px solid #d1ad71;
+                border-top: 2px solid transparent;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+
+                100% {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+
+            .login-container.visible .login-button {
+                opacity: 1;
+                transform: translateY(0);
+                transition-delay: 0.7s;
+            }
+
+            .login-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+            }
+
+            .login-button:active {
+                transform: translateY(0);
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 430px) {
+                .container {
+                    box-shadow: none;
+                }
+
+                .logo-image {
+                    width: 200px;
+                    height: 200px;
+                }
+
+                .login-container {
+                    padding: 30px 24px 50px;
+                }
+            }
+
+            @media (min-width: 431px) {
+                .container {
+                    border-radius: 20px;
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                    min-height: calc(100vh - 40px);
+                }
+            }
+
+            /* Loading animation */
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                z-index: 1000;
+                opacity: 1;
+                transition: opacity 0.5s ease;
+            }
+
+            .loading-overlay.fade-out {
+                opacity: 0;
+                pointer-events: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="loading-overlay" id="loadingOverlay"></div>
+
+        <div class="container">
+            <div class="logo-container" id="logoContainer">
+                <img src="{{ asset("images/logo 1.png") }}" alt="Horison Logo" class="logo-image" id="logoImage" />
+            </div>
+
+            <div class="login-container" id="loginContainer">
+                <div class="login-header">
+                    <div class="progress-indicator"></div>
+                    <div class="login-title">Login</div>
+                    <div class="login-subtitle">Hi! Welcome to Horison</div>
+                </div>
+
+                <form action="{{ route("login.post") }}" method="POST" id="loginForm">
+                    @csrf
+                    <div class="form-container">
+                        <div class="input-group">
+                            <input type="text" class="input-field" placeholder="username/no kamar" id="username"
+                                name="username" value="{{ old("username") }}" />
+                            @error("username")
+                                <div style="color: #ff6b6b; font-size: 12px; margin-top: 5px;">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="input-group">
+                            <div class="password-container">
+                                <input type="password" class="input-field" placeholder="password" id="password"
+                                    name="password" />
+                                <svg class="password-toggle" id="passwordToggle" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9Z"
+                                        fill="currentColor" opacity="0.54" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 5C7.029 5 3 8.686 3 12C3 15.314 7.029 19 12 19C16.971 19 21 15.314 21 12C21 8.686 16.971 5 12 5ZM12 17C8.134 17 5 14.209 5 12C5 9.791 8.134 7 12 7C15.866 7 19 9.791 19 12C19 14.209 15.866 17 12 17Z"
+                                        fill="currentColor" opacity="0.54" />
+                                    <path d="M3 3L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        opacity="0.54" id="slashLine" />
+                                </svg>
+                            </div>
+                            @error("password")
+                                <div style="color: #ff6b6b; font-size: 12px; margin-top: 5px;">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button class="login-button" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Animation sequence
+            window.addEventListener("load", function() {
+                // Hide loading overlay
+                setTimeout(() => {
+                    document
+                        .getElementById("loadingOverlay")
+                        .classList.add("fade-out");
+                }, 500);
+
+                // Step 1: Show logo with fade in (after 800ms)
+                setTimeout(() => {
+                    document
+                        .getElementById("logoContainer")
+                        .classList.add("loaded");
+                }, 800);
+
+                // Step 2: Show login container from bottom (after 2000ms)
+                setTimeout(() => {
+                    document
+                        .getElementById("loginContainer")
+                        .classList.add("visible");
+                }, 2000);
+
+                // Step 3: Push logo up (after 2200ms)
+                setTimeout(() => {
+                    document
+                        .getElementById("logoContainer")
+                        .classList.add("pushed-up");
+                }, 2200);
+            });
+
+            // Password visibility toggle
+            document
+                .getElementById("passwordToggle")
+                .addEventListener("click", function() {
+                    const passwordField = document.getElementById("password");
+                    const slashLine = document.getElementById("slashLine");
+
+                    if (passwordField.type === "password") {
+                        passwordField.type = "text";
+                        slashLine.style.display = "none";
+                    } else {
+                        passwordField.type = "password";
+                        slashLine.style.display = "block";
+                    }
+                });
+
+            // Form submission with enhanced animations
+            document
+                .getElementById("loginForm")
+                .addEventListener("submit", function(e) {
+                    const username = document
+                        .getElementById("username")
+                        .value.trim();
+                    const password = document
+                        .getElementById("password")
+                        .value.trim();
+                    const button = document.querySelector(".login-button");
+
+                    // Add click animation
+                    button.classList.add("clicked");
+                    setTimeout(() => {
+                        button.classList.remove("clicked");
+                    }, 600);
+
+                    if (!username || !password) {
+                        e.preventDefault();
+                        // Shake animation for empty fields
+                        const emptyField = !username ?
+                            document.getElementById("username") :
+                            document.getElementById("password");
+                        emptyField.style.animation = "shake 0.5s ease-in-out";
+                        emptyField.style.borderColor = "#ff6b6b";
+
+                        setTimeout(() => {
+                            emptyField.style.animation = "";
+                            emptyField.style.borderColor = "";
+                        }, 500);
+
+                        alert("Mohon lengkapi username dan password");
+                        return;
+                    }
+
+                    // Add loading state
+                    button.classList.add("loading");
+                    button.textContent = "";
+                });
+
+            // Add shake animation keyframe
+            const style = document.createElement("style");
+            style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+            document.head.appendChild(style);
+
+            // Input focus effects
+            document.querySelectorAll(".input-field").forEach((input) => {
+                input.addEventListener("focus", function() {
+                    this.parentElement.style.transform = "scale(1.02)";
+                });
+
+                input.addEventListener("blur", function() {
+                    this.parentElement.style.transform = "scale(1)";
+                });
+            });
+        </script>
+    </body>
+
+</html>

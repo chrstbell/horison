@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Struk Pesanan - Horison</title>
+<style>
+    body {
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        padding: 10px;
+        background: white;
+        color: black;
+        width: 80mm; /* Lebar struk standar */
+    }
+    h2, h3 {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    hr {
+        border: none;
+        border-top: 1px dashed #000;
+        margin: 10px 0;
+    }
+    .receipt-header {
+        margin-bottom: 10px;
+    }
+    .receipt-info {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    .receipt-items {
+        width: 100%;
+        font-size: 13px;
+        border-collapse: collapse;
+    }
+    .receipt-items th, .receipt-items td {
+        padding: 4px 0;
+    }
+    .receipt-items th {
+        border-bottom: 1px solid #000;
+        text-align: left;
+    }
+    .receipt-items td.qty, .receipt-items td.price {
+        text-align: right;
+        min-width: 40px;
+    }
+    .receipt-total {
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .receipt-notes {
+        margin-top: 10px;
+        font-style: italic;
+        font-size: 12px;
+    }
+    .receipt-footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 11px;
+    }
+    @media print {
+        body {
+            width: 80mm;
+            margin: 0;
+            padding: 0;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="receipt-header">
+        <h2>HORISON HOTEL</h2>
+        <h3>STRUK PESANAN DAPUR</h3>
+    </div>
+    <hr />
+    <div class="receipt-info">
+        <div><strong>Kamar:</strong> <span id="roomNumber"></span></div>
+        <div><strong>Waktu Pesan:</strong> <span id="orderTime"></span></div>
+    </div>
+    <table class="receipt-items">
+        <thead>
+            <tr>
+                <th>Menu</th>
+                <th class="qty">Qty</th>
+                <th class="price">Harga</th>
+            </tr>
+        </thead>
+        <tbody id="itemsBody">
+            <!-- Item pesanan akan dimasukkan di sini -->
+        </tbody>
+    </table>
+    <hr />
+    <div class="receipt-total">
+        <div>Subtotal:</div>
+        <div id="subtotalAmount"></div>
+    </div>
+    <div class="receipt-total">
+        <div>Pajak (10%):</div>
+        <div id="taxAmount"></div>
+    </div>
+    <div class="receipt-total" style="font-size: 16px;">
+        <div>TOTAL:</div>
+        <div id="totalAmount"></div>
+    </div>
+    <div class="receipt-notes" id="notesArea"></div>
+    <hr />
+    <div class="receipt-footer">
+        Terima kasih atas pesanan Anda!<br />
+        Selamat Menikmati!
+    </div>
+
+<script>
+    function formatRupiah(number) {
+        return 'Rp ' + number.toLocaleString('id-ID');
+    }
+
+    function renderReceipt(order) {
+        document.getElementById('roomNumber').textContent = order.room;
+        document.getElementById('orderTime').textContent = order.time;
+
+        const tbody = document.getElementById('itemsBody');
+        tbody.innerHTML = '';
+
+        let subtotal = 0;
+        order.items.forEach(item => {
+            const totalItem = item.price * item.quantity;
+            subtotal += totalItem;
+
+            const tr = document.createElement('tr');
+
+            const tdName = document.createElement('td');
+            tdName.textContent = item.name;
+            tr.appendChild(tdName);
+
+            const tdQty = document.createElement('td');
+            tdQty.className = 'qty';
+            tdQty.textContent = item.quantity;
+            tr.appendChild(tdQty);
+
+            const tdPrice = document.createElement('td');
+            tdPrice.className = 'price';
+            tdPrice.textContent = formatRupiah(totalItem);
+            tr.appendChild(tdPrice);
+
+            tbody.appendChild(tr);
+        });
+
+        const tax = Math.round(subtotal * 0.1);
+        const total = subtotal + tax;
+
+        document.getElementById('subtotalAmount').textContent = formatRupiah(subtotal);
+        document.getElementById('taxAmount').textContent = formatRupiah(tax);
+        document.getElementById('totalAmount').textContent = formatRupiah(total);
+
+        const notesArea = document.getElementById('notesArea');
+        if (order.notes && order.notes.trim() !== '') {
+            notesArea.textContent = 'Catatan: ' + order.notes;
+        } else {
+            notesArea.textContent = ''; // Kosongkan jika tidak ada catatan
+        }
+    }
+
+    // Render struk saat halaman dimuat
+    window.addEventListener('load', () => {
+        const storedReceiptData = sessionStorage.getItem('currentReceiptData');
+        if (storedReceiptData) {
+            const orderData = JSON.parse(storedReceiptData);
+            renderReceipt(orderData);
+            sessionStorage.removeItem('currentReceiptData'); // Hapus data setelah digunakan
+            window.print();
+        } else {
+            // Jika tidak ada data, mungkin tampilkan pesan error atau kembali ke dashboard
+            alert('Tidak ada data pesanan untuk dicetak.');
+            window.close(); // Tutup jendela jika tidak ada data
+        }
+    });
+</script>
+</body>
+</html>

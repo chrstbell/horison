@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori - Horison Restaurant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            background: #fff;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+            background: white;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #f0f0f0;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #333;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 23px;
+            color: #333;
+        }
+
+        /* Category Section */
+        .category-section {
+            padding: 20px 20px 100px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .category-card {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+
+        .category-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-bottom: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700; /* Diubah kembali ke 700 untuk konsistensi */
+            font-size: 13px;
+            color: #333;
+            text-align: center;
+            line-height: 1.3;
+            width: 90px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #D1AD71;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 390px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 25px;
+            box-shadow: 0 15px 50px rgba(209, 173, 113, 0.4);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: rgba(118, 98, 65, 0.7);
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .home-icon { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>'); }
+        .menu-icon { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5a4.008 4.008 0 0 0 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>'); }
+        .order-icon { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>'); }
+        .star-icon { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'); }
+
+        /* Desktop Responsive */
+        @media (min-width: 768px) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                padding: 30px;
+            }
+            
+            .container {
+                border-radius: 25px;
+            }
+        }
+
+        /* Responsive untuk mobile kecil */
+        @media (max-width: 430px) {
+            .container {
+                width: 100vw;
+                max-width: none;
+            }
+            
+            .bottom-nav {
+                width: calc(100vw - 40px);
+                max-width: 360px;
+            }
+            
+            .category-grid {
+                gap: 15px;
+            }
+            
+            .category-img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .category-name {
+                width: 80px;
+                font-size: 10px;
+            }
+            
+            /* Header responsive */
+            .header-title {
+                font-size: 22px; /* Sedikit lebih kecil di mobile */
+            }
+        }
+        
+        /* Untuk layar sangat kecil */
+        @media (max-width: 350px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-title {
+                font-size: 20px; /* Lebih kecil untuk layar sangat kecil */
+            }
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            position: absolute;
+            bottom: 75px; /* Sesuaikan dengan tinggi bottom-nav */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: flex;
+            gap: 10px; /* Menambahkan gap antara elemen di cart summary */
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+            cursor: pointer; /* Menambahkan cursor pointer untuk menunjukkan bisa diklik */
+        }
+
+        .cart-summary.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        .cart-summary span {
+            white-space: nowrap;
+        }
+
+        /* Responsive untuk layar sangat kecil */
+        @media (max-width: 360px) {
+            .company-info,
+            .values-grid,
+            .brands-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 26px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+        }
+
+        /* Responsive untuk layar besar/tablet */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section - Diperbarui agar konsisten dengan menu.html -->
+        <div class="header">
+            <button class="back-btn" onclick="window.history.back()">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 18L9 12L15 6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="header-title">Aneka Kuliner yang Menggugah Selera</div>
+        </div>
+
+        <!-- Category Section -->
+        <div class="category-section">
+            <div class="category-grid">
+                <!-- Row 1 -->
+                <a href="category/bite-start.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/cheese-fries.png')"></div>
+                    <div class="category-name">Bite & Start</div>
+                </a>
+
+                <a href="category/pasta.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/duck-aglio-olio.png')"></div>
+                    <div class="category-name">Pasta & Noodles</div>
+                </a>
+
+                <a href="category/soup.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/oxtail-soup.png')"></div>
+                    <div class="category-name">Soups & Broths</div>
+                </a>
+
+                <!-- Row 2 -->
+                <a href="category/rice.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/beef-ribs-fried-rice.png')"></div>
+                    <div class="category-name">Signature Rice</div>
+                </a>
+
+                <a href="category/sandwiches.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/club-sandwiches.png')"></div>
+                    <div class="category-name">Burgers & Sandwiches</div>
+                </a>
+
+                <a href="category/grilled.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/grilled-chicken-satay.png')"></div>
+                    <div class="category-name">Grilled Specialties</div>
+                </a>
+
+                <!-- Row 3 -->
+                <a href="category/signature.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/chicken-steak.png')"></div>
+                    <div class="category-name">Signature Dishes</div>
+                </a>
+
+                <a href="category/sweet.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/banana-fritters.png')"></div>
+                    <div class="category-name">Sweet Endings</div>
+                </a>
+
+                <a href="category/new-menu.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/soto-ramen-fusion.png')"></div>
+                    <div class="category-name">New Menu!</div>
+                </a>
+
+                <!-- Row 4 -->
+                <a href="category/minuman.html" class="category-card">
+                    <div class="category-img" style="background-image: url('/image/minuman.png')"></div>
+                    <div class="category-name">Drinks</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="window.location.href='home.html'">
+                <div class="nav-icon home-icon"></div>
+            </button>
+            <button class="nav-item active" onclick="window.location.href='menu.html'">
+                <div class="nav-icon menu-icon"></div>
+            </button>
+            <button class="nav-item" onclick="window.location.href='status.html'">
+                <div class="nav-icon order-icon"></div>
+            </button>
+            <button class="nav-item"onclick="window.location.href='about-us.html'">
+                <div class="nav-icon star-icon"></div>
+            </button>
+
+            <!-- Elemen keranjang baru -->
+            <div class="cart-summary" id="cartSummary">
+                <span id="cartItemCount">0</span>
+                <span id="cartTotalPrice">IDR 0</span>
+                <span>Checkout</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data produk (sama seperti di menu.html, pastikan konsisten)
+        const products = {
+            1: {
+                title: "Soto Santan",
+                price: 45000,
+                description: "Tasikmalaya chicken soup that are slowly simmered in a coconut milk broth",
+                image: "/image/soto-santan.png",
+                category: "Signature Dishes",
+                serveTime: "10-15 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            2: {
+                title: "Timbel Rice",
+                price: 45000,
+                description: "Steamed rice wrapped up with banana leaves served with chicken and fresh vegetables",
+                image: "/image/timbel-rice.png",
+                category: "Signature Dishes",
+                serveTime: "5-10 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            3: {
+                title: "Tenderloin Steak",
+                price: 125000,
+                description: "Grilled tenderloin served with vegetables, french fries, and barbeque sauce",
+                image: "/image/tenderloin-steak.png",
+                category: "Signature Dishes",
+                serveTime: "20-25 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            4: {
+                title: "Chicken Steak",
+                price: 45000,
+                description: "Grilled chicken served with vegetables, french fries, and barbeque sauce",
+                image: "/image/chicken-steak.png",
+                category: "Signature Dishes",
+                serveTime: "15-20 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            5: {
+                title: "Sate Maranggi",
+                price: 75000,
+                description: "One of traditional dish from West Java, Sweet & Savoury grill beef skewers served with Sambal Gowang, Peanut Spicy Sauce, & Steam Rice",
+                image: "/image/sate-maranggi.png",
+                category: "Signature Dishes",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            6: {
+                title: "Cikur Rice",
+                price: 45000,
+                description: "Steamed Marinated Galangal Rice served with Chicken and Fresh Vegetables",
+                image: "/image/rice-cikur.png",
+                category: "Signature Dishes",
+                serveTime: "5-10 menit",
+                spiceLevel: "Sedang"
+            },
+            7: {
+                title: "Cheese Fries",
+                price: 30000,
+                description: "Fries potatoes served withmelted cheese sauce",
+                image: "/image/cheese-fries.png",
+                category: "Bite & Start",
+                serveTime: "10-15 menit",
+                spiceLevel: "Tidak Pedas"
+            },
+            8: {
+                title: "Imperial Caesar Salad",
+                price: 45000,
+                description: "Romaine Lettuce, Grill Chicken, Grill Prawn served with Caesar Dressing.",
+                image: "/image/caesar-salad.png",
+                category: "Bite & Start",
+                serveTime: "10-15 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            9: {
+                title: "BBQ Chicken Wings",
+                price: 30000,
+                description: "Braised Chicken Wings and Homemade BBQ Sauce.",
+                image: "/image/bbq-wings.png",
+                category: "Bite & Start",
+                serveTime: "10-15 menit",
+                spiceLevel: "Sedang"
+            },
+            10: {
+                title: "Duck Aglio Olio Sambal Matah",
+                price: 55000,
+                description: "Italian pasta cooked with traditional braised duck & Sambal Matah ",
+                image: "/image/duck-aglio-olio.png",
+                category: "Pasta & Noodles",
+                serveTime: "15-20 menit",
+                spiceLevel: "Pedas"
+            },
+            11: {
+                title: "Pad Thai",
+                price: 50000,
+                description: "Thai Kwetiau cooked with hot paste Thailand spices & Local Prawn",
+                image: "/image/pad-thai.png",
+                category: "Pasta & Noodles",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            12: {
+                title: "Chicken Fried Noodle",
+                price: 45000,
+                description: "Eggs noodles with Kampung spices & Seared Chicken Fillet on top",
+                image: "/image/chicken-fried-noodle.png",
+                category: "Pasta & Noodles",
+                serveTime: "10-15 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            13: {
+                title: "Soto Ayam Madura",
+                price: 45000,
+                description: "Traditional Chicken soup, Boiled Eggs, Chicken Shredded, Sambal, Kerupuk, & Steam Rice",
+                image: "/image/soto-ayam-madura.png",
+                category: "Soups & Broths",
+                serveTime: "10-15 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            14: {
+                title: "Beef Ribs Soup",
+                price: 85000,
+                description: "Traditional ribs cooked with local spice, served with sambal, emping, & Steam Rice",
+                image: "/image/beef-ribs-soup.png",
+                category: "Soups & Broths",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            15: {
+                title: "Tom Yum Soup",
+                price: 50000,
+                description: "Spicy and Sour Shrimp Soup cook with Lemongrass and Coriander Flavour",
+                image: "/image/tom-yum-soup.png",
+                category: "Soups & Broths",
+                serveTime: "10-15 menit",
+                spiceLevel: "Sedang"
+            },
+            16: {
+                title: "Soto Betawi",
+                price: 50000,
+                description: "Jakarta traditional beef soup, Coconut Milk Broth, Pickles, Sambal, Emping, & Steam Rice",
+                image: "/image/soto-betawi.png",
+                category: "Soups & Broths",
+                serveTime: "10-15 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            17: {
+                title: "Horison Oxtail Soup",
+                price: 85000,
+                description: "Traditional oxtail cooked with local spice, served with sambal, emping, & Steam Rice",
+                image: "/image/oxtail-soup.png",
+                category: "Soups & Broths",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            18: {
+                title: "Beef Ribs Fried Rice",
+                price: 60000,
+                description: "Green chili paste, Beef Ribs served with Pickles, Sunny Side Up Eggs, & Emping",
+                image: "/image/beef-ribs-fried-rice.png",
+                category: "Signature Rice",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            19: {
+                title: "Horison Fried Rice",
+                price: 45000,
+                description: "Indonesian Nasi Goreng served with Chicken Satay, Fried Chicken, Sunny Side Up Eggs, Pickles, & Prawn Crakers",
+                image: "/image/horison-fried-rice.png",
+                category: "Signature Rice",
+                serveTime: "10-15 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            20: {
+                title: "Rawon Fried Rice",
+                price: 50000,
+                description: "Javanese Rawon Paste with Beef Dice, Salted Eggs, Pickles, & Prawn Crackers",
+                image: "/image/rawon-fried-rice.png",
+                category: "Signature Rice",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            21: {
+                title: "Basil Burger's",
+                price: 50000,
+                description: "Beef patties with onion rings, homemade BBQ Sauce, Coleslow served with Fries",
+                image: "/image/basil-burger.png",
+                category: "Burgers & Sandwiches",
+                serveTime: "15-20 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            22: {
+                title: "Fish And Chips",
+                price: 40000,
+                description: "Deep Fried Fish served with Tartar Sauce and French Fries",
+                image: "/image/fish-and-chips.png",
+                category: "Burgers & Sandwiches",
+                serveTime: "10-15 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            23: {
+                title: "Club Sandwiches",
+                price: 50000,
+                description: "Triple Deck Sandwiches, Grill Chicken, Eggs & Beef Ham Served with Fries",
+                image: "/image/club-sandwiches.png",
+                category: "Burgers & Sandwiches",
+                serveTime: "10-15 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            24: {
+                title: "Aromatic Fried Duck",
+                price: 85000,
+                description: "Braised local duck with local traditional paste spice, Traditional Madura chicken satay, Peanuts spice sauce, Pickles & Steam Rice served with Karedok & Steam Rice",
+                image: "/image/aromatic-fried-duck.png",
+                category: "Grilled Specialties",
+                serveTime: "20-25 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            25: {
+                title: "Grilled Chicken Satay",
+                price: 50000,
+                description: "Traditional Madura chicken satay, Peanuts spice sauce, Pickles & Steam Rice",
+                image: "/image/grilled-chicken-satay.png",
+                category: "Grilled Specialties",
+                serveTime: "15-20 menit",
+                spiceLevel: "Bisa disesuaikan"
+            },
+            26: {
+                title: "Colenak",
+                price: 30000,
+                description: "Grilled Fermented Cassava served with Brown Sugar Sauce",
+                image: "/image/colenak.png",
+                category: "Sweet Endings",
+                serveTime: "5-10 menit",
+                spiceLevel: "Tidak pedas"
+            },
+            27: {
+                title: "Fried Banana Fritters",
+                price: 30000,
+                description: "Indonesian fried bananas, Condensed Milk, Cheese Shredded, Chocolate Sauce",
+                image: "/image/banana-fritters.png",
+                category: "Sweet Endings",
+                serveTime: "5-10 menit",
+                spiceLevel: "Tidak pedas"
+            }
+        };
+
+        // Variabel untuk menyimpan item di keranjang
+        let cart = JSON.parse(localStorage.getItem('cart')) || []; 
+
+        // Fungsi untuk menyimpan keranjang ke localStorage
+        function saveCartToLocalStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // JavaScript untuk navigasi
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        navItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                // Hapus class active dari semua item
+                navItems.forEach(nav => nav.classList.remove('active'));
+                // Tambahkan class active ke item yang diklik
+                item.classList.add('active');
+            });
+        });
+
+        // --- JavaScript untuk Cart Summary di index.html ---
+        const cartSummary = document.getElementById('cartSummary');
+        const cartItemCount = document.getElementById('cartItemCount');
+        const cartTotalPrice = document.getElementById('cartTotalPrice');
+
+        // Fungsi untuk memperbarui tampilan ringkasan keranjang
+        function updateCartSummary() {
+            let totalItems = 0;
+            let totalCartPrice = 0;
+
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                totalCartPrice += item.quantity * item.price;
+            });
+
+            cartItemCount.textContent = totalItems;
+            cartTotalPrice.textContent = `IDR ${totalCartPrice.toLocaleString('id-ID')}`;
+
+            if (totalItems > 0) {
+                cartSummary.classList.add('active');
+            } else {
+                cartSummary.classList.remove('active');
+            }
+        }
+
+        // Fungsi untuk menambahkan/mengupdate/menghapus produk dari keranjang
+        function updateCartItem(productId, newQuantity) {
+            const product = products[productId];
+            if (!product) return;
+
+            const existingItemIndex = cart.findIndex(item => item.productId == productId);
+
+            if (newQuantity > 0) {
+                if (existingItemIndex > -1) {
+                    // Update kuantitas jika produk sudah ada
+                    cart[existingItemIndex].quantity = newQuantity;
+                } else {
+                    // Tambahkan produk baru jika belum ada
+                    cart.push({
+                        productId: productId,
+                        quantity: newQuantity,
+                        price: product.price,
+                        title: product.title,
+                        image: product.image
+                    });
+                }
+            } else {
+                // Hapus produk jika kuantitas 0
+                if (existingItemIndex > -1) {
+                    cart.splice(existingItemIndex, 1);
+                }
+            }
+            saveCartToLocalStorage(); // Simpan perubahan ke localStorage
+            updateCartSummary();
+            updateFoodCardDisplay(productId); // Perbarui tampilan item di food-card
+            // Trigger event storage untuk memberitahu halaman lain (misal menu.html)
+            window.dispatchEvent(new Event('storage'));
+        }
+
+        // Fungsi untuk memperbarui tampilan item di food-card (tombol vs. input kuantitas)
+        function updateFoodCardDisplay(productId) {
+            const foodCard = document.querySelector(`.food-card[data-id="${productId}"]`);
+            if (!foodCard) return;
+
+            const addBtn = foodCard.querySelector('.add-btn');
+            const quantitySelectorInline = foodCard.querySelector('.quantity-selector-inline');
+            const quantityValueInline = foodCard.querySelector('.quantity-value-inline');
+
+            const existingItem = cart.find(item => item.productId == productId);
+
+            if (existingItem && existingItem.quantity > 0) {
+                addBtn.style.display = 'none';
+                quantitySelectorInline.style.display = 'flex';
+                quantityValueInline.textContent = existingItem.quantity;
+            } else {
+                addBtn.style.display = 'block';
+                quantitySelectorInline.style.display = 'none';
+                addBtn.textContent = 'Tambah'; // Kembalikan teks tombol
+                addBtn.style.background = 'transparent'; // Kembalikan warna tombol
+                addBtn.style.color = '#2ecc71'; // Kembalikan warna teks
+            }
+        }
+
+        // Event listener untuk tombol "Tambah" di food-card
+        document.querySelectorAll('.food-card .add-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const productId = e.target.closest('.food-card').getAttribute('data-id');
+                updateCartItem(productId, (cart.find(item => item.productId == productId)?.quantity || 0) + 1);
+
+                // Feedback visual
+                button.textContent = 'Ditambahkan!';
+                button.style.background = '#2ecc71';
+                button.style.color = '#fff';
+                
+                setTimeout(() => {
+                    updateFoodCardDisplay(productId);
+                }, 500);
+            });
+        });
+
+        // Event listener untuk tombol kuantitas inline di food-card
+        document.querySelectorAll('.food-card').forEach(foodCard => {
+            const productId = foodCard.getAttribute('data-id');
+            const decreaseBtnInline = foodCard.querySelector('.decrease-btn-inline');
+            const increaseBtnInline = foodCard.querySelector('.increase-btn-inline');
+            const quantityValueInline = foodCard.querySelector('.quantity-value-inline');
+
+            if (decreaseBtnInline && increaseBtnInline && quantityValueInline) {
+                decreaseBtnInline.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let currentQty = parseInt(quantityValueInline.textContent);
+                    if (currentQty > 0) {
+                        currentQty--;
+                        updateCartItem(productId, currentQty);
+                    }
+                });
+
+                increaseBtnInline.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    let currentQty = parseInt(quantityValueInline.textContent);
+                    currentQty++;
+                    updateCartItem(productId, currentQty);
+                });
+            }
+        });
+
+        // Event listener untuk tombol Checkout di cart summary
+        cartSummary.addEventListener('click', () => {
+            window.location.href = 'checkout.html'; // Arahkan ke halaman checkout
+        });
+
+        // Inisialisasi tampilan keranjang dan item menu saat halaman dimuat
+        function initializePage() {
+            updateCartSummary();
+            document.querySelectorAll('.food-card').forEach(item => {
+                const productId = item.getAttribute('data-id');
+                updateFoodCardDisplay(productId);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+        // Tambahkan event listener untuk storage agar update otomatis jika ada perubahan di tab lain
+        window.addEventListener('storage', updateCartSummary);
+    </script>
+</body>
+</html>
